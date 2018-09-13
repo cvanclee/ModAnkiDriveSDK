@@ -3,6 +3,7 @@ package de.adesso.anki.messages;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Set;
+import de.adesso.anki.messages.*;
 
 import javax.xml.bind.DatatypeConverter;
 
