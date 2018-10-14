@@ -13,16 +13,15 @@ import com.google.common.base.MoreObjects;
 public class LocalizationTransitionUpdateMessage extends Message {
   public static final int TYPE = 0x29;
   
-  private int roadPieceId; // unsigned byte
-  private int prevRoadPieceId; // unsigned byte
+  private int roadPieceId; // signed byte
+  private int prevRoadPieceId; // signed byte
   private float offsetFromRoadCenter; // float
-  
-  private int drivingDirection; // unsigned byte
 
   private int lastReceivedLaneChangeId; // unsigned byte
   private int lastExecutedLaneChangeId; // unsigned byte
-  private int lastDesiredHorizontalSpeed; // unsigned short
-  private int lastDesiredSpeed; // unsigned short
+  private int lastDesiredLangeChangeSpeed; // unsigned short
+  private int aveFollowLineDriftPixels; // unsigned short
+  private int hadLaneChangeActivity;
   
   private int uphillCounter; // unsigned byte
   private int downhillCounter; // unsigned byte
@@ -37,20 +36,17 @@ public class LocalizationTransitionUpdateMessage extends Message {
   }
   
   @Override
-  protected void parsePayload(ByteBuffer buffer) {
-    this.roadPieceId = Byte.toUnsignedInt(buffer.get());
-    this.prevRoadPieceId = Byte.toUnsignedInt(buffer.get());
+  protected void parsePayload(ByteBuffer buffer) {  
+    this.roadPieceId = buffer.get();
+    this.prevRoadPieceId = buffer.get();
     this.offsetFromRoadCenter = buffer.getFloat();
-    
-    // Anki removed this field in the latest API version
-    if (buffer.remaining() == 11)
-      this.drivingDirection = Byte.toUnsignedInt(buffer.get());
     
     this.lastReceivedLaneChangeId = Byte.toUnsignedInt(buffer.get());
     this.lastExecutedLaneChangeId = Byte.toUnsignedInt(buffer.get());
-    this.lastDesiredHorizontalSpeed = Short.toUnsignedInt(buffer.getShort());
-    this.lastDesiredSpeed = Short.toUnsignedInt(buffer.getShort());
-
+    this.lastDesiredLangeChangeSpeed = Short.toUnsignedInt(buffer.getShort());
+    this.aveFollowLineDriftPixels = Byte.toUnsignedInt(buffer.get());
+    this.hadLaneChangeActivity = Byte.toUnsignedInt(buffer.get());
+    
     this.uphillCounter = Byte.toUnsignedInt(buffer.get());
     this.downhillCounter = Byte.toUnsignedInt(buffer.get());
 
@@ -64,12 +60,11 @@ public class LocalizationTransitionUpdateMessage extends Message {
     buffer.put((byte) this.prevRoadPieceId);
     buffer.putFloat(this.offsetFromRoadCenter);
 
-    buffer.put((byte) this.drivingDirection);
-
     buffer.put((byte) this.lastReceivedLaneChangeId);
     buffer.put((byte) this.lastExecutedLaneChangeId);
-    buffer.putShort((short) this.lastDesiredHorizontalSpeed);
-    buffer.putShort((short) this.lastDesiredSpeed);
+    buffer.putShort((short) this.lastDesiredLangeChangeSpeed);
+    buffer.put((byte) this.aveFollowLineDriftPixels);
+    buffer.put((byte) this.hadLaneChangeActivity);
 
     buffer.put((byte) this.uphillCounter);
     buffer.put((byte) this.downhillCounter);
@@ -82,7 +77,6 @@ public class LocalizationTransitionUpdateMessage extends Message {
   public String toString() {
     return MoreObjects.toStringHelper(this)
         .add("offset", this.offsetFromRoadCenter)
-        .add("drivingDirection", this.drivingDirection)
         .add("leftWheelDistance", this.leftWheelDistance)
         .add("rightWheelDistance", this.rightWheelDistance)
         .toString();
@@ -90,6 +84,10 @@ public class LocalizationTransitionUpdateMessage extends Message {
 
   public int getRoadPieceId() {
     return roadPieceId;
+  }
+  
+  public int getHadLaneChangeActivity() {
+	  return hadLaneChangeActivity;
   }
 
   public int getPrevRoadPieceId() {
@@ -100,10 +98,6 @@ public class LocalizationTransitionUpdateMessage extends Message {
     return offsetFromRoadCenter;
   }
 
-  public int getDrivingDirection() {
-    return drivingDirection;
-  }
-
   public int getLastReceivedLaneChangeId() {
     return lastReceivedLaneChangeId;
   }
@@ -112,12 +106,12 @@ public class LocalizationTransitionUpdateMessage extends Message {
     return lastExecutedLaneChangeId;
   }
 
-  public int getLastDesiredHorizontalSpeed() {
-    return lastDesiredHorizontalSpeed;
+  public int getLastDesiredLangeChangeSpeed() {
+    return lastDesiredLangeChangeSpeed;
   }
 
-  public int getLastDesiredSpeed() {
-    return lastDesiredSpeed;
+  public int getAveFollowLineDriftPixels() {
+    return aveFollowLineDriftPixels;
   }
 
   public int getUphillCounter() {

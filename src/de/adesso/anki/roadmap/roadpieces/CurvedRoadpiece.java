@@ -11,6 +11,7 @@ public class CurvedRoadpiece extends Roadpiece {
 
   public CurvedRoadpiece() {
     this.section = new Section(this, ENTRY, EXIT);
+    curved = true;
   }
   
 }

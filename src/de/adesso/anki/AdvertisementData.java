@@ -1,5 +1,6 @@
 package de.adesso.anki;
 
+import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 

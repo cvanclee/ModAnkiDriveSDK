@@ -16,6 +16,9 @@ public abstract class Roadpiece {
   
   private Position position;
   protected Section section;
+  private int pieceId;
+  private boolean reversed;
+  protected boolean curved;
   
   public static Roadpiece createFromId(int roadpieceId) {
     Set<Class<? extends Roadpiece>> roadpieces = reflections.getSubTypesOf(Roadpiece.class);
@@ -32,8 +35,15 @@ public abstract class Roadpiece {
         // or it cannot be instantiated
       }
     }
-
     return null;
+  }
+  
+  public void setPieceId(int id) {
+	  this.pieceId = id;
+  }
+  
+  public int getPieceId() {
+	  return pieceId;
   }
   
   public Position getPosition() {
@@ -51,6 +61,10 @@ public abstract class Roadpiece {
   public String getType() {
     return getClass().getSimpleName();
   };
+  
+  public boolean isCurved() {
+	  return curved;
+  }
   
   public Section getSectionByLocation(int locationId, boolean reverse)
   {
@@ -92,5 +106,13 @@ public abstract class Roadpiece {
     System.out.println(map.toList().toArray());
     
     System.exit(0);
+  }
+  
+  public boolean isReversed() {
+	  return reversed;
+  }
+  
+  public void setReversed(boolean r) {
+	  reversed = r;
   }
 }

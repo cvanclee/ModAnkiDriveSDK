@@ -1,6 +1,7 @@
 package de.adesso.anki;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.time.LocalTime;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
@@ -68,6 +69,10 @@ public class Vehicle {
     anki.addMessageListener(this, defaultListener);
   }
   
+  public void removeAllListeners() {
+	  this.listeners = LinkedListMultimap.create();
+  }
+  
   public void disconnect() {
 	anki.removeMessageListener(this, defaultListener);
     anki.disconnect(this);
@@ -76,6 +81,14 @@ public class Vehicle {
   public void sendMessage(Message message) {
     anki.sendMessage(this, message);
     System.out.println(String.format("[%s] > %s: %s", LocalTime.now(), this, message));
+  }
+  
+  public void sendMessage(Message message, boolean verbose) {
+	  if (verbose) {
+		  sendMessage(message);
+	  } else {
+		  anki.sendMessage(this, message);
+	  }
   }
   
   @Deprecated
@@ -117,6 +130,10 @@ public class Vehicle {
     this.advertisement = new AdvertisementData(manufacturerData, localName);
     
     this.listeners = LinkedListMultimap.create();
+  }
+  
+  public Vehicle() { //Testing only
+	  
   }
 
   public String getColor() {

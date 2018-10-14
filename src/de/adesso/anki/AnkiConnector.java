@@ -50,6 +50,11 @@ public class AnkiConnector {
 	  this(anki.host, anki.port);
   }
   
+  public AnkiConnector() { //Testing only
+	  this.host = "";
+	  this.port = -1;
+  }
+  
   public synchronized List<Vehicle> findVehicles() {
     writer.println("SCAN");
     List<Vehicle> foundVehicles = new ArrayList<>();
@@ -57,7 +62,7 @@ public class AnkiConnector {
     while (expectingResponse)
     {
       String response = reader.waitFor("SCAN;");
-      if (response.equals("SCAN;COMPLETED")) {
+      if (response.contains("SCAN;COMPLETED")) {
         expectingResponse = false;
       }
       else {
@@ -77,7 +82,8 @@ public class AnkiConnector {
     writer.println("CONNECT;"+vehicle.getAddress());
     String response = reader.waitFor("CONNECT;");
     
-    if (response.equals("CONNECT;ERROR")) {
+    if (response.contains("CONNECT;ERROR")) {
+      System.out.println("Connecting to vehicle " + vehicle.getAdvertisement().getModelId() + " failed: " + response);
       throw new RuntimeException("connect failed");
     }
     

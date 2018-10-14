@@ -109,5 +109,4 @@ public class LocalizationPositionUpdateMessage extends Message {
     return (parsingFlags & 0x40) == 0x40;
   }
   
-  
 }

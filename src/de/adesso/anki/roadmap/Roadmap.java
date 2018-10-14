@@ -32,9 +32,11 @@ public class Roadmap {
     }
   }
   
-  public void add(int roadpieceId, int locationId, boolean reverse) {
+  public synchronized void add(int roadpieceId, int locationId, boolean reverse) {
     Roadpiece piece = Roadpiece.createFromId(roadpieceId);
+    piece.setPieceId(roadpieceId);
     Section section = piece.getSectionByLocation(locationId, reverse);
+    piece.setReversed(reverse);
     
     this.addSection(section);
   }
@@ -59,5 +61,4 @@ public class Roadmap {
   public boolean isComplete() {
     return anchor != null && anchor.getPrev() != null;
   }
-  
 }
