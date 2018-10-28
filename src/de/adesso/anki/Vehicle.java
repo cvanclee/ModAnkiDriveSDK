@@ -109,7 +109,7 @@ public class Vehicle {
     this.listeners.remove(klass, listener);
   }
   
-  private <T extends Message> void fireMessageReceived(T message) {
+  public <T extends Message> void fireMessageReceived(T message) {
     for (MessageListener<T> l : this.listeners.get(Message.class)) {
       l.messageReceived(message);
     }

@@ -21,7 +21,8 @@ public enum Model {
   THERMO(0x0a, "#a11c20"),
   NUKE(0x0b, "#bed62f"),
   GUARDIAN(0x0d, "#42b1d7"),
-  BIGBANG(0x0e, "#4e674d");
+  BIGBANG(0x0e, "#4e674d"),
+  FREEWHEEL(0x0f);
   
   private int id;
   private String color = "#f00";

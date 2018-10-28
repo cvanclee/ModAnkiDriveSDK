@@ -13,11 +13,16 @@ import java.nio.ByteBuffer;
 public class SetLightsMessage extends Message {
   public static final int TYPE = 0x1d;
   
-  private byte lightMask; // unsigned byte
+  private byte lightMask = 0x0; // unsigned byte
   
   public SetLightsMessage() {
     this.type = TYPE;
   }
+  
+  public SetLightsMessage(byte lightMask) {
+	    this.type = TYPE;
+	    this.lightMask = lightMask;
+	  }
   
   @Override
   protected void parsePayload(ByteBuffer buffer) {

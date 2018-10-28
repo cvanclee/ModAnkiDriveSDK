@@ -124,7 +124,7 @@ public class AnkiConnector {
 
   synchronized void disconnect(Vehicle vehicle) {
     writer.println("DISCONNECT;"+vehicle.getAddress());
-    reader.waitFor("DISCONNECT;");
+    System.out.println(reader.waitFor("DISCONNECT;"));
     reader.removeListener(notificationListeners.remove(vehicle));
   }
 
